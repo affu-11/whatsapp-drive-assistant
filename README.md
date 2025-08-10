@@ -31,8 +31,7 @@ Open http://localhost:5678 in your browser.
 2. Import the Workflow
 Click Import → From File in n8n.
 Select whatsapp_drive_demo.json.
-<img width="1920" height="1080" alt="Screenshot 2025-08-10 113842" src="https://github.com/user-attachments/assets/1ea83029-887f-4987-97f5-c810b4f187dd" />
-
+<img width="1920" height="1080" alt="Screenshot 2025-08-10 115215" src="https://github.com/user-attachments/assets/75af331d-2f63-4092-a605-c833ffe9e6d5" />
 
 4. Add Your Credentials
 Replace placeholders in nodes with your own:
