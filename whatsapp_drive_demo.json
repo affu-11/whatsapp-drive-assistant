@@ -1,0 +1,121 @@
+{
+  "name": "WhatsApp-Driven Google Drive Assistant (Demo Placeholder)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-webhook",
+        "options": {}
+      },
+      "id": "1",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "operation": "list",
+        "filter": "files",
+        "folderId": "1YcrdBJtRS_GMQeiRXoweYC8khxhhWl6Q"
+      },
+      "id": "2",
+      "name": "Google Drive - List Files",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 2,
+      "position": [550, 200],
+      "credentials": {
+        "googleApi": "<YOUR_GOOGLE_DRIVE_CREDENTIALS>"
+      }
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "prompt": "Summarize this file list:\n{{$json}}",
+        "temperature": 0.5,
+        "maxTokens": 200
+      },
+      "id": "3",
+      "name": "OpenAI - Summarize",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 1,
+      "position": [750, 400],
+      "credentials": {
+        "openAIApi": "<YOUR_OPENAI_API_KEY>"
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "sheetId": "1zvce_aah7lG5Ps7lk4KmMMGVNpeq19nyQanP-StVZP8",
+        "range": "Sheet1!A:B"
+      },
+      "id": "4",
+      "name": "Google Sheets - Append",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 3,
+      "position": [950, 300],
+      "credentials": {
+        "googleApi": "<YOUR_GOOGLE_SHEETS_CREDENTIALS>"
+      }
+    },
+    {
+      "parameters": {
+        "from": "whatsapp:<YOUR_TWILIO_WHATSAPP_NUMBER>",
+        "to": "whatsapp:<RECEIVER_WHATSAPP_NUMBER>",
+        "message": "Here is your summary:\n{{$json[\"choices\"][0][\"text\"]}}"
+      },
+      "id": "5",
+      "name": "Twilio - Send Message",
+      "type": "n8n-nodes-base.twilio",
+      "typeVersion": 1,
+      "position": [1150, 400],
+      "credentials": {
+        "twilioApi": {
+          "id": "<YOUR_TWILIO_CREDENTIALS_ID>"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google Drive - List Files",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive - List Files": {
+      "main": [
+        [
+          {
+            "node": "OpenAI - Summarize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI - Summarize": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets - Append",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Twilio - Send Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false
+}

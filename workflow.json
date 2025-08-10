@@ -1,0 +1,29 @@
+{
+  "name": "WhatsApp-Driven Google Drive Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "whatsapp",
+        "method": "POST"
+      },
+      "name": "Webhook"
+    },
+    {
+      "parameters": {},
+      "name": "Parse Command"
+    },
+    {
+      "parameters": {},
+      "name": "Google Drive"
+    },
+    {
+      "parameters": {},
+      "name": "OpenAI Summariser"
+    },
+    {
+      "parameters": {},
+      "name": "Google Sheets Logger"
+    }
+  ],
+  "connections": {}
+}
